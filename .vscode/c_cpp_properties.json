@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/libhv-http/contrib/libhv/http",
+                "${workspaceFolder}/nlohmann-json/contrib/nlohmann-json",
+                "${workspaceFolder}/crow-htpp/contrib/crow",
+                "${workspaceFolder}/libhv-http/contrib/libhv/include/hv"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang-16",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}
