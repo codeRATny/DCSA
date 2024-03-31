@@ -5,7 +5,7 @@
 
 namespace route
 {
-    void RegisterResources(hv::HttpService &router);
+void RegisterResources(hv::HttpService &router);
 }
 
 #endif
