@@ -9,19 +9,19 @@
 class HttpServer final
 {
 public:
-    using UPtr = std::unique_ptr<HttpServer>;
+using UPtr = std::unique_ptr<HttpServer>;
 
-    HttpServer();
-    HttpServer(const HttpServer &) = delete;
-    HttpServer(HttpServer &&) = delete;
-    ~HttpServer();
+HttpServer();
+HttpServer(const HttpServer &) = delete;
+HttpServer(HttpServer &&) = delete;
+~HttpServer();
 
-    void Start(int port);
+void Start(int port);
 
 private:
 
-    std::unique_ptr<hv::HttpServer> _server;
-    HttpService _router;
+std::unique_ptr<hv::HttpServer> _server;
+HttpService _router;
 };
 
 #endif
