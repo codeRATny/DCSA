@@ -1,20 +1,18 @@
 cmake_minimum_required(VERSION 3.0)
-project(crow-http)
+project(http-server)
 
-set(TARGET_NAME "crow-http")
+set(TARGET_NAME "http-server")
 
-set(CROW_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/contrib/crow)
+set(LIBHV_INCLUDE ${PROJECT_BINARY_DIR}/contrib/libhv/include/hv)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated -O3")
+add_subdirectory(${PROJECT_SOURCE_DIR}/contrib)
 
-find_package(OpenSSL REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Werror -Wempty-body -Wredundant-move -O2")
 
-file(GLOB_RECURSE SOURCE
+file(GLOB_RECURSE SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Werror -Wempty-body -Wredundant-move -O2")
 
 set(SOURCE_DIR_HEADER "")
 execute_process(
@@ -26,7 +24,7 @@ execute_process(
     string(REPLACE "\n" ";" SOURCE_DIR_HEADER ${SOURCE_DIR_HEADER})
     
 include_directories(${SOURCE_DIR_HEADER})
-include_directories(${CROW_INCLUDE})
+include_directories(${LIBHV_INCLUDE})
     
-add_executable(${TARGET_NAME} ${SOURCE})
-target_link_libraries(${TARGET_NAME} ${OPENSSL_LIBRARIES})
+add_executable(${TARGET_NAME} ${SOURCES})
+target_link_libraries(${TARGET_NAME} hv_static)
