@@ -1,14 +1,16 @@
 #include "Utility.hpp"
-#include <memory>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
+#include <memory>
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
 
 #define FF_ARRAY_ELEMS(a) (sizeof(a) / sizeof((a)[0]))
 #define AV_BASE64_SIZE(x) (((x) + 2) / 3 * 4 + 1)
-
-using namespace std;
 
 static const uint8_t map2[] =
     {
@@ -85,59 +87,67 @@ char *av_base64_encode(char *out, int out_size, const uint8_t *in, int in_size)
     return av_base64_encode_l(out, &out_size, in, in_size);
 }
 
-string utils::EncodeBase64(const string &txt)
+namespace utils
 {
-    if (txt.empty())
+    std::string EncodeBase64(const std::string &txt)
     {
-        return "";
-    }
-    int size = AV_BASE64_SIZE(txt.size()) + 10;
-    string ret;
-    ret.resize(size);
-
-    if (!av_base64_encode_l((char *)ret.data(), &size, (const uint8_t *)txt.data(), txt.size()))
-    {
-        return "";
-    }
-    ret.resize(size);
-    return ret;
-}
-
-string utils::DecodeBase64(const string &txt)
-{
-    if (txt.empty())
-    {
-        return "";
-    }
-    string ret;
-    ret.resize(txt.size() * 3 / 4 + 10);
-    auto size = av_base64_decode((uint8_t *)ret.data(), txt.data(), ret.size());
-
-    if (size <= 0)
-    {
-        return "";
-    }
-    ret.resize(size);
-    return ret;
-}
-
-vector<string> utils::Split(const string &s, const char *delim)
-{
-    vector<string> ret;
-    size_t last = 0;
-    auto index = s.find(delim, last);
-    while (index != string::npos)
-    {
-        if (index - last > 0)
+        if (txt.empty())
         {
-            ret.push_back(s.substr(last, index - last));
+            return "";
         }
-        last = index + strlen(delim);
-        index = s.find(delim, last);
+        int size = AV_BASE64_SIZE(txt.size()) + 10;
+        std::string ret;
+        ret.resize(size);
+
+        if (!av_base64_encode_l((char *)ret.data(), &size, (const uint8_t *)txt.data(), txt.size()))
+        {
+            return "";
+        }
+        ret.resize(size);
+        return ret;
     }
-    if (!s.size() || s.size() - last > 0)
+
+    std::string DecodeBase64(const std::string &txt)
     {
-        ret.push_back(s.substr(last));
+        if (txt.empty())
+        {
+            return "";
+        }
+        std::string ret;
+        ret.resize(txt.size() * 3 / 4 + 10);
+        auto size = av_base64_decode((uint8_t *)ret.data(), txt.data(), ret.size());
+
+        if (size <= 0)
+        {
+            return "";
+        }
+        ret.resize(size);
+        return ret;
     }
-    return ret;
+
+    std::vector<std::string> Split(const std::string &s, const char *delim)
+    {
+        std::vector<std::string> ret;
+        size_t last = 0;
+        auto index = s.find(delim, last);
+        while (index != std::string::npos)
+        {
+            if (index - last > 0)
+            {
+                ret.push_back(s.substr(last, index - last));
+            }
+            last = index + strlen(delim);
+            index = s.find(delim, last);
+        }
+        if (!s.size() || s.size() - last > 0)
+        {
+            ret.push_back(s.substr(last));
+        }
+        return ret;
+    }
+
+    std::string GenerateUUIDv4()
+    {
+        return boost::uuids::to_string(boost::uuids::random_generator()());
+    }
 }

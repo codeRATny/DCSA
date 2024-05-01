@@ -1,4 +1,5 @@
 #include "HTTPServer.hpp"
+#include "GlobalDeffs.hpp"
 
 int main()
 {

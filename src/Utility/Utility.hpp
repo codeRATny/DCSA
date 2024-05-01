@@ -13,6 +13,8 @@ namespace utils
     std::string DecodeBase64(const std::string &txt);
 
     std::vector<std::string> Split(const std::string &s, const char *delim);
+
+    std::string GenerateUUIDv4();
 }
 
 #endif
